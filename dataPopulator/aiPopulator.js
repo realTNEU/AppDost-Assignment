@@ -1,13 +1,9 @@
-// AI-Based Data Populator for AppDost
-// Creates random users and generates AI-driven conversations about current tech events
-
 import '../server/config/env.js';
 import connectDB from '../server/utils/connectDB.js';
 import User from '../server/models/User.js';
 import { Groq } from 'groq-sdk';
 import axios from 'axios';
 
-// Configuration
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:5000/api';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
@@ -18,10 +14,8 @@ if (!GROQ_API_KEY) {
 
 const groq = new Groq({ apiKey: GROQ_API_KEY });
 
-// Groq model to use (from Groq API documentation)
 const GROQ_MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct';
 
-// Test Groq API connection
 async function testGroqAPI() {
   try {
     console.log('🔍 Testing Groq API connection...');

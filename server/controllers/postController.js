@@ -1,7 +1,6 @@
 import Post from "../models/Post.js";
 
 const populatePost = async (post) => {
-  // If post is a lean document, we need to populate manually
   if (post.populate) {
     await post.populate([
       { path: "user", select: "firstName lastName avatarUrl" },
@@ -9,7 +8,6 @@ const populatePost = async (post) => {
     ]);
     return post;
   }
-  // For lean documents, return as is (already populated)
   return post;
 };
 
@@ -21,7 +19,6 @@ export const createPost = async (req, res) => {
       return res.status(400).json({ message: "Post text is required" });
     }
 
-    // Use Cloudinary URL if file was uploaded, otherwise use provided image URL
     const imageUrl = req.file?.path || image || null;
 
     const post = await Post.create({
@@ -205,7 +202,6 @@ export const addComment = async (req, res) => {
 export const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
-    // Handle both JSON and FormData
     const text = req.body.text;
     const image = req.body.image;
 
@@ -223,11 +219,9 @@ export const updatePost = async (req, res) => {
       post.text = text.trim();
     }
 
-    // Use Cloudinary URL if file was uploaded, otherwise use provided image URL
     if (req.file?.path) {
       post.image = req.file.path;
     } else if (image !== undefined) {
-      // Handle both string URLs and FormData image field
       post.image = (typeof image === 'string' && image.trim()) ? image.trim() : null;
     }
 

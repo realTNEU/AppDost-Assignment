@@ -2,15 +2,13 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
 export default function LandingPage() {
-  // TODO: Update these with your actual URLs
-  const RESUME_WEBSITE_URL = 'https://stillnotfoundameya.lol' // Replace with your website URL
-  const RESUME_GITHUB_URL = 'https://github.com/realTNEU' // Replace with your GitHub URL
-  const RESUME_URL = 'https://drive.google.com/file/d/1XKoxqvvp7o3tY4MQtyxui_nC6jTt1rUz/view?usp=sharing' // Replace with your resume URL (PDF or link)
-  const AVATAR_URL = 'https://api.dicebear.com/9.x/open-peeps/svg?seed=Robert' // Replace with your avatar URL
+  const RESUME_WEBSITE_URL = 'https://stillnotfoundameya.lol'
+  const RESUME_GITHUB_URL = 'https://github.com/realTNEU'
+  const RESUME_URL = 'https://drive.google.com/file/d/1XKoxqvvp7o3tY4MQtyxui_nC6jTt1rUz/view?usp=sharing'
+  const AVATAR_URL = 'https://api.dicebear.com/9.x/open-peeps/svg?seed=Robert'
 
   return (
     <div className="font-inter text-gray-100">
-      {/* Hero Section */}
       <section className="relative mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 pb-24 pt-12 lg:flex-row lg:items-center lg:py-20">
         <div className="w-full lg:w-3/5">
           <motion.span 
@@ -108,7 +106,6 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* Features Section */}
       <section className="relative border-y border-purple-900/30 bg-[#10011b]/70 py-20">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6">
           <div className="flex flex-col gap-4 text-center">
@@ -223,7 +220,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Tech Stack Section */}
       <section className="relative mx-auto flex w-full max-w-6xl flex-col gap-8 sm:gap-10 px-4 sm:px-6 py-12 sm:py-20">
         <div className="relative flex-1 overflow-hidden rounded-2xl sm:rounded-3xl border border-purple-900/40 bg-[#140321]/80 p-4 sm:p-6 md:p-8 shadow-[0_35px_90px_rgba(8,0,24,0.55)]">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,#441c7a_0%,transparent_55%)] opacity-40" />
@@ -284,7 +280,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Resume Section - Above Footer */}
       <section className="relative border-t border-purple-900/30 bg-[#0b0114]/80 py-16">
         <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 px-6 text-center">
           <motion.div

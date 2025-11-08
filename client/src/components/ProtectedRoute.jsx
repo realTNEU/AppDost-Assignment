@@ -14,14 +14,11 @@ export default function ProtectedRoute({ children, redirectTo = '/feed' }) {
         });
         
         if (res.ok) {
-          // User is authenticated, redirect to feed
           navigate(redirectTo, { replace: true });
         } else {
-          // User is not authenticated, show landing page
           setLoading(false);
         }
       } catch (err) {
-        // Error checking auth, show landing page
         setLoading(false);
       }
     };

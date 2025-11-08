@@ -2,7 +2,6 @@ import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import multer from 'multer';
 
-// Configure Cloudinary immediately when module loads
 const cloudName = process.env.CLOUDINARY_CLOUD_NAME?.trim();
 const apiKey = process.env.CLOUDINARY_API_KEY?.trim();
 const apiSecret = process.env.CLOUDINARY_API_SECRET?.trim();
@@ -26,7 +25,6 @@ if (cloudName && apiKey && apiSecret) {
   throw new Error(`Cloudinary configuration is required. Please set ${missing.join(', ')} in your .env file`);
 }
 
-// Create storage configurations with optimized transformations
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
@@ -35,8 +33,8 @@ const storage = new CloudinaryStorage({
       allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
       transformation: [
         { 
-          width: 800,        // Reduced from 1200 for faster upload and delivery
-          height: 800,       // Reduced from 1200
+          width: 800,
+          height: 800,
           crop: 'limit',
           quality: 'auto:good',
           fetch_format: 'auto',
@@ -70,11 +68,9 @@ const avatarStorage = new CloudinaryStorage({
   },
 });
 
-// Helper function to optimize Cloudinary URLs for faster loading
 export function optimizeCloudinaryUrl(url, options = {}) {
   if (!url || typeof url !== 'string') return url;
   
-  // If it's not a Cloudinary URL, return as is
   if (!url.includes('res.cloudinary.com')) return url;
   
   try {
@@ -82,38 +78,34 @@ export function optimizeCloudinaryUrl(url, options = {}) {
     const urlObj = new URL(url);
     const pathParts = urlObj.pathname.split('/');
     
-    // Find the version and public_id
     const uploadIndex = pathParts.findIndex(part => part === 'upload');
     if (uploadIndex === -1) return url;
     
-    // Build transformation string
     const transformations = [];
     if (width) transformations.push(`w_${width}`);
     if (height) transformations.push(`h_${height}`);
     transformations.push(`q_${quality}`);
     transformations.push(`f_${format}`);
-    transformations.push('dpr_auto'); // Device pixel ratio
-    transformations.push('c_limit'); // Limit crop
+    transformations.push('dpr_auto');
+    transformations.push('c_limit');
     
-    // Insert transformations after 'upload'
     pathParts.splice(uploadIndex + 1, 0, transformations.join(','));
     
     urlObj.pathname = pathParts.join('/');
     return urlObj.toString();
   } catch (error) {
-    // If URL parsing fails, return original URL
     return url;
   }
 }
 
 export const upload = multer({ 
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+  limits: { fileSize: 5 * 1024 * 1024 }
 });
 
 export const uploadAvatar = multer({ 
   storage: avatarStorage,
-  limits: { fileSize: 2 * 1024 * 1024 } // 2MB limit for avatars
+  limits: { fileSize: 2 * 1024 * 1024 }
 });
 
 export default cloudinary;

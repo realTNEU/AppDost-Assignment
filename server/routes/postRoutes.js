@@ -16,9 +16,9 @@ import { upload } from "../utils/cloudinary.js";
 const router = express.Router();
 
 router.post("/", protect, upload.single("image"), createPost);
-router.get("/feed", optionalAuth, getFeed); // Allow anonymous browsing
+router.get("/feed", optionalAuth, getFeed);
 router.get("/user", protect, getUserPosts);
-router.get("/user/:userId", optionalAuth, getPostsByUserId); // Get posts by specific user ID - must come before /:id routes
+router.get("/user/:userId", optionalAuth, getPostsByUserId);
 router.patch("/:id/like", protect, toggleLike);
 router.patch("/:id/dislike", protect, toggleDislike);
 router.post("/:id/comments", protect, addComment);

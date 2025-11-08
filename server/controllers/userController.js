@@ -19,7 +19,6 @@ export const updateProfile = async (req, res) => {
       if (req.body[k] !== undefined) updates[k] = req.body[k];
     });
 
-    // Use Cloudinary URL if avatar file was uploaded
     if (req.file?.path) {
       updates.avatarUrl = req.file.path;
     }

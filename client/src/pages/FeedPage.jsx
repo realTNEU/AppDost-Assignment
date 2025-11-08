@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getOptimizedPostImageUrl, getOptimizedAvatarUrl } from "../utils/cloudinary.js";
 import BrowseUsers from "../components/BrowseUsers.jsx";
 
-// Memoized Post Component for better performance
 const PostCard = memo(({ post, currentUserId, onLike, onDislike, onComment, commentDraft, onCommentChange, submitting }) => {
   const likeActive = useMemo(() => {
     if (!currentUserId || !Array.isArray(post.likes)) return false;
@@ -606,7 +605,6 @@ export default function FeedPage() {
         <div className="absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,#260947_0%,transparent_70%)] opacity-40" />
       </div>
       
-      {/* Increased top spacing to fix navbar proximity issue */}
       <div className="mx-auto pt-8 sm:pt-12 md:pt-16 flex w-full max-w-5xl flex-col gap-8 md:gap-10">
         <motion.header 
           className="flex flex-col gap-4 md:gap-5 text-center"

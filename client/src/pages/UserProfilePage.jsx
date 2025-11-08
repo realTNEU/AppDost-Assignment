@@ -29,7 +29,6 @@ export default function UserProfilePage() {
       try {
         setLoading(true);
 
-        // Try to get current user
         try {
           const currentUserRes = await fetch(`${API_BASE}/users/me`, {
             credentials: "include",
@@ -39,10 +38,8 @@ export default function UserProfilePage() {
             setCurrentUser(data.user);
           }
         } catch (err) {
-          // Not logged in, continue
         }
 
-        // Get profile user
         const userRes = await fetch(`${API_BASE}/users/${userId}`, {
           credentials: "include",
         });
@@ -51,7 +48,6 @@ export default function UserProfilePage() {
         }
         const userData = await userRes.json();
 
-        // Get user's posts
         const postsRes = await fetch(`${API_BASE}/posts/user/${userId}`, {
           credentials: "include",
         });

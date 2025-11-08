@@ -17,18 +17,15 @@ h1, h2, h3, .heading {
   font-family: var(--font-heading);
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom Scrollbar Styling - Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(147, 51, 234, 0.8) rgba(15, 10, 25, 0.8);
 }
 
-/* Custom Scrollbar Styling - WebKit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
@@ -57,19 +54,3 @@ html {
 ::-webkit-scrollbar-corner {
   background: rgba(15, 10, 25, 0.8);
 }
-
-/* Optional: Hide scrollbar but keep functionality */
-/* Uncomment the following if you want to hide scrollbar completely */
-
-/*
-::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-  background: transparent;
-}
-
-* {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-*/

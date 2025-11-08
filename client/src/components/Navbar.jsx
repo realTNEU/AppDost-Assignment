@@ -67,7 +67,6 @@ export default function Navbar() {
     closeMobileMenu()
   }, [closeMobileMenu])
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (profileMenu && !event.target.closest('.profile-menu-container')) {
@@ -108,7 +107,6 @@ export default function Navbar() {
               <Link
                 to="/feed"
                 onClick={(e) => {
-                  // Navigate to feed first, then open browse users
                   setTimeout(() => {
                     window.dispatchEvent(new CustomEvent('openBrowseUsers'));
                   }, 100);

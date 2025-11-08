@@ -1,4 +1,3 @@
-// IMPORTANT: Load environment variables FIRST
 import '../server/config/env.js';
 import connectDB from '../server/utils/connectDB.js';
 import User from '../server/models/User.js';
@@ -188,15 +187,9 @@ const dummyUsers = [
 
 async function populateUsers() {
   try {
-    // Connect to database
     await connectDB();
     console.log("✅ Connected to database");
 
-    // Clear existing users (optional - comment out if you want to keep existing users)
-    // const deleted = await User.deleteMany({});
-    // console.log(`🗑️  Deleted ${deleted.deletedCount} existing users`);
-
-    // Check for existing users to avoid duplicates
     const existingEmails = await User.find({ email: { $in: dummyUsers.map(u => u.email) } }).select('email');
     const existingEmailSet = new Set(existingEmails.map(u => u.email));
     
@@ -207,12 +200,9 @@ async function populateUsers() {
       process.exit(0);
     }
 
-    // Insert users
-    // Note: The password will be automatically hashed by the pre-save hook in the User model
     const createdUsers = await User.insertMany(usersToInsert);
     console.log(`✅ Successfully created ${createdUsers.length} verified users`);
 
-    // Display created users
     console.log("\n📋 Created users:");
     createdUsers.forEach((user, index) => {
       console.log(`${index + 1}. ${user.firstName} ${user.lastName} (${user.email}) - Verified: ${user.isVerified}`);

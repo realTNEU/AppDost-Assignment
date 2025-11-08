@@ -211,11 +211,9 @@ export default function ProfilePage() {
       const formData = new FormData();
       formData.append("text", editPost.text);
       
-      // Only send image if it's a new file upload
       if (editPostImage) {
         formData.append("image", editPostImage);
       } else if (editPost.image && !editPost.image.startsWith('data:')) {
-        // If it's a URL (not a data URL from preview), send it as text field
         formData.append("image", editPost.image);
       }
 
@@ -291,7 +289,6 @@ export default function ProfilePage() {
       setPosts((p) => [data.post, ...p]);
       setNewPost("");
       setPostImage(null);
-      // Reset file input
       const fileInput = document.querySelector('#post-image-input');
       if (fileInput) fileInput.value = '';
       setCommentDrafts((prev) => ({ ...prev, [data.post._id]: "" }));
@@ -310,7 +307,6 @@ export default function ProfilePage() {
         return;
       }
       setAvatarFile(file);
-      // Preview avatar
       const reader = new FileReader();
       reader.onloadend = () => {
         setEditForm(prev => ({ ...prev, avatarUrl: reader.result }));
@@ -329,7 +325,6 @@ export default function ProfilePage() {
       if (avatarFile) {
         formData.append("avatar", avatarFile);
       } else if (editForm.avatarUrl && !editForm.avatarUrl.startsWith('data:')) {
-        // If it's a URL (not a data URL from file preview), include it
         formData.append("avatarUrl", editForm.avatarUrl);
       }
 

@@ -1,4 +1,3 @@
-// IMPORTANT: Load environment variables FIRST before any other imports
 import './config/env.js';
 
 import express from "express";
@@ -14,7 +13,6 @@ import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 const app = express();
 
-// ---------------- SECURITY ----------------
 app.use(
   helmet({
     crossOriginResourcePolicy: false,
