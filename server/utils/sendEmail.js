@@ -12,7 +12,7 @@ export const sendEmail = async (to, subject, text, html) => {
     })
 
     const mailOptions = {
-      from: `"AppDost" <${process.env.GMAIL_USER}>`,
+      from: `"PublicFeed" <${process.env.GMAIL_USER}>`,
       to,
       subject,
       text,

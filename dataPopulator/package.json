@@ -1,0 +1,15 @@
+{
+  "name": "data-populator",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AI-based data populator for AppDost",
+  "main": "aiPopulator.js",
+  "scripts": {
+    "populate": "node aiPopulator.js"
+  },
+  "dependencies": {
+    "groq-sdk": "^0.5.0",
+    "axios": "^1.6.0"
+  }
+}
+

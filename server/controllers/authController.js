@@ -1,14 +1,11 @@
-// server/controllers/authController.js
 import jwt from "jsonwebtoken"
 import crypto from "crypto"
 import User from "../models/User.js"
 import { sendEmail } from "../utils/sendEmail.js"
 
-// Generate JWT
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" })
 
-// --- USER SIGNUP ---
 export const signup = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body
@@ -17,29 +14,24 @@ export const signup = async (req, res) => {
     if (existing)
       return res.status(400).json({ message: "Email already registered" })
 
-    // create a new user object (not saved yet)
     const user = new User({ firstName, lastName, email, password })
 
-    // generate OTP (4-digit)
     const otp = Math.floor(1000 + Math.random() * 9000).toString()
     const hashedOtp = crypto.createHash("sha256").update(otp).digest("hex")
     user.otp = hashedOtp
-    user.otpExpires = Date.now() + 5 * 60 * 1000 // 5 minutes
-
-    // send email before saving user
+    user.otpExpires = Date.now() + 5 * 60 * 1000
     await sendEmail(
       email,
-      "Your AppDost Verification Code",
+      "Your PublicFeed Verification Code",
       `Your OTP code is ${otp}`,
       `<div style="font-family:sans-serif;font-size:16px">
-         <p>Welcome to <b>AppDost</b>, ${firstName}!</p>
+         <p>Welcome to <b>PublicFeed</b>, ${firstName}!</p>
          <p>Your verification code is:</p>
          <h2 style="color:#9b59b6;letter-spacing:4px">${otp}</h2>
          <p>This code expires in 5 minutes.</p>
        </div>`
     )
 
-    // save user only if email sent successfully
     await user.save()
 
     res.status(201).json({
@@ -54,7 +46,6 @@ export const signup = async (req, res) => {
   }
 }
 
-// --- OTP VERIFICATION ---
 export const verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body
@@ -70,7 +61,6 @@ export const verifyOtp = async (req, res) => {
       return res.status(400).json({ message: "Invalid or expired OTP" })
     }
 
-    // mark verified and remove otp fields
     user.isVerified = true
     user.otp = undefined
     user.otpExpires = undefined
@@ -103,7 +93,6 @@ export const verifyOtp = async (req, res) => {
   }
 }
 
-// --- LOGIN ---
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body
@@ -143,5 +132,20 @@ export const login = async (req, res) => {
       message: "Login failed",
       error: err.message,
     })
+  }
+}
+
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    })
+
+    res.status(200).json({ message: "Logged out successfully" })
+  } catch (err) {
+    console.error("Logout Error:", err)
+    res.status(500).json({ message: "Logout failed", error: err.message })
   }
 }

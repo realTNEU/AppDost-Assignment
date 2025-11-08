@@ -21,8 +21,6 @@ export default function AuthPage() {
   const [suPass, setSuPass] = useState("");
   const [suPass2, setSuPass2] = useState("");
   const [touched, setTouched] = useState({});
-
-  // OTP fields
   const [otp, setOtp] = useState(["", "", "", ""]);
   const otpRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const [otpMsg, setOtpMsg] = useState("");
@@ -55,7 +53,6 @@ export default function AuthPage() {
     setError("");
   };
 
-  // --- SIGNUP SUBMIT ---
   const onSubmitSignupStep1 = async (e) => {
     e.preventDefault();
     setTouched({ fn: true, ln: true, se: true, pw: true, pw2: true });
@@ -78,7 +75,6 @@ export default function AuthPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Signup failed");
 
-      console.log("✅ Signup success, showing OTP step");
       setStep(2);
       setResendSeconds(RESEND_COOLDOWN);
       setOtp(["", "", "", ""]);
@@ -91,7 +87,6 @@ export default function AuthPage() {
     }
   };
 
-  // --- VERIFY OTP ---
   const verifyOtp = async (e) => {
     e.preventDefault();
     const code = otp.join("");
@@ -119,7 +114,6 @@ export default function AuthPage() {
     }
   };
 
-  // --- RESEND OTP ---
   const resendOtp = async () => {
     if (resendSeconds > 0) return;
     try {
@@ -147,7 +141,6 @@ export default function AuthPage() {
     }
   };
 
-  // --- LOGIN SUBMIT ---
   const onSubmitLogin = async (e) => {
     e.preventDefault();
     try {
@@ -191,19 +184,10 @@ export default function AuthPage() {
     setTimeout(() => otpRefs[focusIdx]?.current?.focus(), 50);
   };
 
-  // ✅ FIXED: OTP stays in signup column (no -100% slide)
-  const slideStyle = (s) => {
-    if (s === 0) return { transform: "translateX(0%)" }; // login
-    if (s === 1 || s === 2) return { transform: "translateX(-100%)" }; // signup/otp
-  };
-
-  // --- UI ---
   return (
-  <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_left,#14021b,#090211,#05010a)] flex items-start justify-center pt-32 pb-12 px-6">
-    <div className="w-full max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-[0_40px_80px_rgba(10,0,20,0.6)] grid grid-cols-1 md:grid-cols-2">
-      
-      {/* LEFT PANEL */}
-      <div className="hidden md:block relative bg-linear-to-br from-[#2a004a] via-[#1b0135] to-[#0a0015] p-10">
+  <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_left,#14021b,#090211,#05010a)] flex items-start justify-center pt-20 sm:pt-32 pb-8 sm:pb-12 px-4 sm:px-6">
+    <div className="w-full max-w-5xl mx-auto rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_40px_80px_rgba(10,0,20,0.6)] grid grid-cols-1 md:grid-cols-2">
+      <div className="hidden md:block relative bg-linear-to-br from-[#2a004a] via-[#1b0135] to-[#0a0015] p-8 lg:p-10">
         <div className="absolute inset-0 -z-10 opacity-30">
           <div className="absolute -left-16 -top-10 w-72 h-72 rounded-full bg-linear-to-tr from-[#7c2eff] to-[#ff6ad5] blur-3xl opacity-30" />
           <div className="absolute -right-24 bottom-8 w-56 h-56 rounded-full bg-linear-to-bl from-[#5b1bff] to-[#9a4bff] blur-2xl opacity-25" />
@@ -211,7 +195,7 @@ export default function AuthPage() {
         </div>
         <div className="h-full flex flex-col justify-center gap-6 text-gray-100">
           <div className="text-3xl font-poppins font-semibold bg-clip-text text-transparent bg-linear-to-r from-fuchsia-400 to-purple-600">
-            AppDost
+            PublicFeed
           </div>
           <h2 className="text-2xl font-poppins font-semibold leading-tight">
             Where professionals connect, create, and grow.
@@ -222,26 +206,23 @@ export default function AuthPage() {
         </div>
       </div>
 
-      {/* RIGHT PANEL */}
-      <div className="relative flex items-start justify-center py-12 px-10 bg-[rgba(15,10,25,0.6)] backdrop-blur-2xl border border-purple-900/40">
+      <div className="relative flex items-start justify-center py-8 sm:py-12 px-4 sm:px-6 md:px-10 bg-[rgba(15,10,25,0.4)] backdrop-blur-3xl backdrop-saturate-180 border border-purple-900/30 shadow-[0_8px_32px_rgba(0,0,0,0.37)]">
         <div className="w-full max-w-xl">
-          
-          {/* HEADER BUTTONS */}
-          <div className="mb-8 flex items-center justify-between">
-            <div className="text-lg font-poppins font-semibold bg-clip-text text-transparent bg-linear-to-r from-fuchsia-400 to-purple-600">
+          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+            <div className="text-base sm:text-lg font-poppins font-semibold bg-clip-text text-transparent bg-linear-to-r from-fuchsia-400 to-purple-600">
               {mode === "login"
                 ? "Sign in"
                 : step === 1
                 ? "Create account"
                 : "Verify code"}
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 onClick={() => {
                   setMode("login");
                   setStep(0);
                 }}
-                className={`text-sm px-3 py-1 rounded-full ${
+                className={`text-xs sm:text-sm px-2.5 sm:px-3 py-1 rounded-full ${
                   mode === "login"
                     ? "bg-[#2a0b4a] text-white"
                     : "text-gray-300 hover:bg-[#12041b]"
@@ -251,7 +232,7 @@ export default function AuthPage() {
               </button>
               <button
                 onClick={startSignup}
-                className={`text-sm px-3 py-1 rounded-full ${
+                className={`text-xs sm:text-sm px-2.5 sm:px-3 py-1 rounded-full ${
                   mode === "signup"
                     ? "bg-fuchsia-600 text-white"
                     : "text-gray-300 hover:bg-[#12041b]"
@@ -263,23 +244,21 @@ export default function AuthPage() {
           </div>
 
           {error && (
-            <div className="mb-4 text-red-400 text-xs bg-red-900/20 p-2 rounded-lg border border-red-800/30">
+            <div className="mb-4 text-red-400 text-xs bg-red-900/20 p-2 sm:p-3 rounded-lg border border-red-800/30 break-words">
               {error}
             </div>
           )}
 
-          {/* MAIN CONTAINER */}
-          <div className="relative overflow-hidden min-h-[600px] transition-all duration-500">
+          <div className="relative overflow-hidden min-h-[500px] sm:min-h-[600px] transition-all duration-500">
             <div
               className={`flex transition-transform duration-500 ease-in-out ${
                 mode === "login" ? "translate-x-0" : "-translate-x-1/2"
               } w-[200%]`}
             >
-              {/* LOGIN CARD */}
-              <div className="w-1/2 px-2">
+              <div className="w-1/2 px-1 sm:px-2">
                 <form
                   onSubmit={onSubmitLogin}
-                  className="p-6 bg-[rgba(20,7,32,0.45)] rounded-2xl border border-purple-800/30 flex flex-col justify-between min-h-[600px]"
+                  className="p-4 sm:p-6 bg-[rgba(20,7,32,0.3)] rounded-xl sm:rounded-2xl border border-purple-800/20 flex flex-col justify-between min-h-[500px] sm:min-h-[600px] backdrop-blur-xl backdrop-saturate-180"
                 >
                   <div className="flex flex-col gap-4">
                     <label className="text-xs text-gray-400">Email</label>
@@ -289,7 +268,7 @@ export default function AuthPage() {
                       type="email"
                       required
                       placeholder="you@domain.com"
-                      className="px-4 py-3 rounded-lg bg-[#0f0714]/60 border border-purple-800/30 focus:border-fuchsia-500 outline-none text-gray-100"
+                      className="px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-[#0f0714]/60 border border-purple-800/30 focus:border-fuchsia-500 outline-none text-gray-100 text-sm"
                     />
                     <label className="text-xs text-gray-400">Password</label>
                     <input
@@ -298,29 +277,28 @@ export default function AuthPage() {
                       type="password"
                       required
                       placeholder="••••••••"
-                      className="px-4 py-3 rounded-lg bg-[#0f0714]/60 border border-purple-800/30 focus:border-fuchsia-500 outline-none text-gray-100"
+                      className="px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-[#0f0714]/60 border border-purple-800/30 focus:border-fuchsia-500 outline-none text-gray-100 text-sm"
                     />
                   </div>
 
                   <button
                     disabled={loading}
-                    className="mt-6 w-full py-3 rounded-lg bg-linear-to-r from-purple-600 to-fuchsia-600 text-white font-medium shadow-[0_8px_30px_rgba(168,85,247,0.18)] disabled:opacity-50"
+                    className="mt-6 w-full py-2.5 sm:py-3 rounded-lg bg-linear-to-r from-purple-600 to-fuchsia-600 text-white text-sm sm:text-base font-medium shadow-[0_8px_30px_rgba(168,85,247,0.18)] disabled:opacity-50"
                   >
                     {loading ? "Signing in..." : "Sign in"}
                   </button>
                 </form>
               </div>
 
-              {/* SIGNUP + OTP */}
-              <div className="w-1/2 px-2">
-                <div className="p-6 bg-[rgba(20,7,32,0.45)] rounded-2xl border border-purple-800/30 flex flex-col justify-between min-h-[600px]">
+              <div className="w-1/2 px-1 sm:px-2">
+                <div className="p-4 sm:p-6 bg-[rgba(20,7,32,0.3)] rounded-xl sm:rounded-2xl border border-purple-800/20 flex flex-col justify-between min-h-[500px] sm:min-h-[600px] backdrop-blur-xl backdrop-saturate-180">
                   {step === 1 && (
                     <form
                       onSubmit={onSubmitSignupStep1}
                       className="flex flex-col gap-4 justify-between h-full"
                     >
                       <div>
-                        <div className="flex gap-3">
+                        <div className="flex flex-col sm:flex-row gap-3">
                           <div className="flex-1">
                             <label className="text-xs text-gray-400">First name</label>
                             <input
@@ -329,11 +307,11 @@ export default function AuthPage() {
                               onBlur={() => mark("fn")}
                               placeholder="John"
                               required
-                              className={`mt-1 w-full px-4 py-3 rounded-lg bg-[#0f0714]/60 border ${
+                              className={`mt-1 w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-[#0f0714]/60 border ${
                                 touched.fn && !isNameOk(firstName)
                                   ? "border-red-500"
                                   : "border-purple-800/30"
-                              } text-gray-100`}
+                              } text-gray-100 text-sm`}
                             />
                           </div>
                           <div className="flex-1">
@@ -344,11 +322,11 @@ export default function AuthPage() {
                               onBlur={() => mark("ln")}
                               placeholder="Doe"
                               required
-                              className={`mt-1 w-full px-4 py-3 rounded-lg bg-[#0f0714]/60 border ${
+                              className={`mt-1 w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-[#0f0714]/60 border ${
                                 touched.ln && !isNameOk(lastName)
                                   ? "border-red-500"
                                   : "border-purple-800/30"
-                              } text-gray-100`}
+                              } text-gray-100 text-sm`}
                             />
                           </div>
                         </div>
@@ -361,11 +339,11 @@ export default function AuthPage() {
                             onBlur={() => mark("se")}
                             placeholder="email@domain.com"
                             required
-                            className={`mt-1 w-full px-4 py-3 rounded-lg bg-[#0f0714]/60 border ${
+                            className={`mt-1 w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-[#0f0714]/60 border ${
                               touched.se && !isEmailOk(suEmail)
                                 ? "border-red-500"
                                 : "border-purple-800/30"
-                            } text-gray-100`}
+                            } text-gray-100 text-sm`}
                           />
                         </div>
 
@@ -378,11 +356,11 @@ export default function AuthPage() {
                             placeholder="Min 8 chars, number & symbol"
                             type="password"
                             required
-                            className={`mt-1 w-full px-4 py-3 rounded-lg bg-[#0f0714]/60 border ${
+                            className={`mt-1 w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-[#0f0714]/60 border ${
                               touched.pw && !isPassOk(suPass)
                                 ? "border-red-500"
                                 : "border-purple-800/30"
-                            } text-gray-100`}
+                            } text-gray-100 text-sm`}
                           />
                         </div>
 
@@ -395,30 +373,30 @@ export default function AuthPage() {
                             placeholder="Repeat password"
                             type="password"
                             required
-                            className={`mt-1 w-full px-4 py-3 rounded-lg bg-[#0f0714]/60 border ${
+                            className={`mt-1 w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-[#0f0714]/60 border ${
                               touched.pw2 && suPass !== suPass2
                                 ? "border-red-500"
                                 : "border-purple-800/30"
-                            } text-gray-100`}
+                            } text-gray-100 text-sm`}
                           />
                         </div>
                       </div>
 
-                      <div className="flex gap-3 mt-6">
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-6">
                         <button
                           type="button"
                           onClick={() => {
                             setStep(0);
                             setMode("login");
                           }}
-                          className="flex-1 px-4 py-3 rounded-lg bg-transparent border border-purple-800/30 text-gray-300"
+                          className="flex-1 px-3 sm:px-4 py-2 sm:py-3 rounded-lg bg-transparent border border-purple-800/30 text-gray-300 text-sm"
                         >
                           Back
                         </button>
                         <button
                           type="submit"
                           disabled={!signupStepValid() || loading}
-                          className={`flex-1 px-4 py-3 rounded-lg text-white ${
+                          className={`flex-1 px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-white text-sm ${
                             signupStepValid()
                               ? "bg-linear-to-r from-purple-600 to-fuchsia-600"
                               : "bg-[#2a1533]/50 cursor-not-allowed"
@@ -435,14 +413,14 @@ export default function AuthPage() {
                       onSubmit={verifyOtp}
                       className="flex flex-col gap-6 justify-center items-center h-full transition-all duration-500"
                     >
-                      <div className="text-sm text-gray-300 text-center">
+                      <div className="text-xs sm:text-sm text-gray-300 text-center px-2 break-words">
                         Enter the 4-digit code sent to{" "}
-                        <span className="text-fuchsia-300 font-medium">
+                        <span className="text-fuchsia-300 font-medium break-all">
                           {suEmail}
                         </span>
                       </div>
 
-                      <div onPaste={handleOtpPaste} className="flex gap-3 justify-center">
+                      <div onPaste={handleOtpPaste} className="flex gap-2 sm:gap-3 justify-center">
                         {otp.map((d, i) => (
                           <input
                             key={i}
@@ -451,23 +429,23 @@ export default function AuthPage() {
                             onChange={(e) => handleOtpChange(i, e.target.value)}
                             maxLength={1}
                             inputMode="numeric"
-                            className="w-12 h-12 text-center text-lg rounded-lg bg-[#0f0714]/60 border border-purple-800/30 focus:border-fuchsia-500 text-gray-100"
+                            className="w-10 h-10 sm:w-12 sm:h-12 text-center text-base sm:text-lg rounded-lg bg-[#0f0714]/60 border border-purple-800/30 focus:border-fuchsia-500 text-gray-100"
                           />
                         ))}
                       </div>
 
-                      <div className="flex gap-3 w-full">
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
                         <button
                           type="button"
                           onClick={() => setStep(1)}
-                          className="flex-1 px-4 py-3 rounded-lg bg-transparent border border-purple-800/30 text-gray-300"
+                          className="flex-1 px-3 sm:px-4 py-2 sm:py-3 rounded-lg bg-transparent border border-purple-800/30 text-gray-300 text-sm"
                         >
                           Back
                         </button>
                         <button
                           type="submit"
                           disabled={loading}
-                          className="flex-1 px-4 py-3 rounded-lg bg-linear-to-r from-purple-600 to-fuchsia-600 text-white disabled:opacity-50"
+                          className="flex-1 px-3 sm:px-4 py-2 sm:py-3 rounded-lg bg-linear-to-r from-purple-600 to-fuchsia-600 text-white disabled:opacity-50 text-sm"
                         >
                           {loading ? "Verifying..." : "Verify"}
                         </button>
